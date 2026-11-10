@@ -1,0 +1,37 @@
+# Checklist de documentos por cliente do escritório (EXEMPLO FICTÍCIO).
+# Troque pelos seus dados em uma cópia privada; nunca grave dados reais neste repositório.
+#   prazo_dia      dia do mês seguinte até quando o cliente deve mandar os documentos
+#   telefone       WhatsApp do contato com DDI+DDD, só dígitos (identifica quem mandou o arquivo)
+#   categoria      nota_fiscal_produto | nota_fiscal_servico | cupom_fiscal | recibo | boleto |
+#                  extrato_bancario | outro
+#   descricao      como aparece na cobrança ("extrato do Banco Exemplo", "notas de compra")
+escritorio: Contabilidade Exemplo (fictícia)
+prazo_dia: 10
+clientes:
+  - id: padaria-pao-bom
+    nome: Padaria Pão Bom (fictícia)
+    contato: João
+    telefone: "5500900000101"
+    esperados:
+      - categoria: extrato_bancario
+        descricao: extrato do Banco Exemplo
+      - categoria: nota_fiscal_produto
+        descricao: notas de compra
+        quantidade: 2
+      - categoria: recibo
+        descricao: recibo do aluguel
+
+  - id: studio-bela-forma
+    nome: Studio Bela Forma (fictício)
+    contato: Carla
+    telefone: "5500900000102"
+    esperados:
+      - categoria: nota_fiscal_servico
+        descricao: notas de serviço emitidas
+        quantidade: 2
+      - categoria: extrato_bancario
+        descricao: extrato do Banco Exemplo
+      - categoria: boleto
+        descricao: boleto do fornecedor
+      - categoria: cupom_fiscal
+        descricao: cupom de compra de material

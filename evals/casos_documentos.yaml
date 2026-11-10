@@ -1,0 +1,92 @@
+# Casos de eval do assistente de documentos (nível 2). Tudo FICTÍCIO: empresas, pessoas, CNPJ e CPF.
+# Os arquivos ficam em evals/documentos_exemplo/ (gerados por: python -m scripts.gerar_documentos_exemplo).
+# Campos:
+#   id          identificador curto
+#   arquivo     nome do arquivo em documentos_exemplo/
+#   cliente     id do cliente em checklist_documentos.yaml (monta o painel "o que falta")
+#   esperado    campos conferidos; omitido = não checar
+#     origem              xml-nfelib | xml-simples | claude
+#     legivel             true/false
+#     categoria           nota_fiscal_produto | nota_fiscal_servico | cupom_fiscal | recibo | boleto |
+#                         extrato_bancario | outro
+#     data_emissao        AAAA-MM-DD
+#     documento_emitente  só dígitos
+#     valor_total         número (tolerância de R$ 0,01)
+#     revisar             true = precisa cair na coluna "revisar"
+#     motivo_contem       trecho que precisa aparecer nos motivos de revisão
+#     usou_sonnet         true/false: roteamento Haiku → Sonnet no caso ambíguo
+# Relógio fixo: 2026-11-11 (competência dos documentos: outubro/2026).
+
+# ---------- XML de NF-e (sem IA, custo zero) ----------
+- id: xml_nfe_papelaria
+  arquivo: nfe_01_papelaria.xml
+  cliente: padaria-pao-bom
+  esperado: {origem: xml-nfelib, categoria: nota_fiscal_produto, data_emissao: "2026-10-15",
+             documento_emitente: "90512345000117", valor_total: 70.00, revisar: false}
+
+- id: xml_nfe_com_frete
+  arquivo: nfe_02_atacado_com_frete.xml
+  cliente: padaria-pao-bom
+  # total = produtos (300) + frete (20); a soma dos itens é conferida contra os produtos
+  esperado: {origem: xml-nfelib, categoria: nota_fiscal_produto, valor_total: 320.00, revisar: false}
+
+- id: xml_nfce_cnpj_invalido
+  arquivo: nfe_03_cupom_cnpj_invalido.xml
+  cliente: padaria-pao-bom
+  esperado: {origem: xml-nfelib, categoria: cupom_fiscal, valor_total: 45.90, revisar: true,
+             motivo_contem: CNPJ inválido}
+
+# ---------- PDF (Claude Haiku 5.5) ----------
+- id: pdf_recibo_aluguel_cpf
+  arquivo: pdf_01_recibo_aluguel.pdf
+  cliente: padaria-pao-bom
+  esperado: {origem: claude, categoria: recibo, data_emissao: "2026-10-05",
+             documento_emitente: "90012345695", valor_total: 1800.00, revisar: false, usou_sonnet: false}
+
+- id: pdf_nfse_servico
+  arquivo: pdf_02_nfse_estudio.pdf
+  cliente: studio-bela-forma
+  esperado: {origem: claude, categoria: nota_fiscal_servico, data_emissao: "2026-10-18",
+             valor_total: 770.00, revisar: false}
+
+- id: pdf_extrato_bancario
+  arquivo: pdf_03_extrato_banco.pdf
+  cliente: studio-bela-forma
+  esperado: {origem: claude, categoria: extrato_bancario, valor_total: 12345.67, revisar: false}
+
+- id: pdf_soma_divergente
+  arquivo: pdf_04_danfe_soma_divergente.pdf
+  cliente: studio-bela-forma
+  esperado: {origem: claude, categoria: nota_fiscal_produto, valor_total: 160.00, revisar: true,
+             motivo_contem: soma dos itens}
+
+# ---------- Imagem (foto de celular) ----------
+- id: img_cupom_material
+  arquivo: img_01_cupom_material.png
+  cliente: studio-bela-forma
+  esperado: {origem: claude, categoria: cupom_fiscal, data_emissao: "2026-10-22", valor_total: 149.80,
+             revisar: false, usou_sonnet: false}
+
+- id: img_recibo_amassado_sem_data
+  arquivo: img_02_recibo_amassado.png
+  cliente: studio-bela-forma
+  # data ausente: Haiku marca baixa confiança, o Sonnet também não acha; vai para revisão
+  esperado: {origem: claude, categoria: recibo, valor_total: 120.00, revisar: true,
+             motivo_contem: data de emissão ausente, usou_sonnet: true}
+
+- id: img_boleto_ambiguo_roteado
+  arquivo: img_03_boleto_valor_apagado.png
+  cliente: studio-bela-forma
+  # valor apagado: Haiku fica em dúvida, o código repete com o Sonnet, que confirma
+  esperado: {origem: claude, categoria: boleto, valor_total: 389.40, revisar: false, usou_sonnet: true}
+
+# ---------- Ilegíveis (sempre revisão, sem Sonnet) ----------
+- id: ilegivel_foto_borrada
+  arquivo: ilegivel_01_foto_borrada.jpg
+  cliente: padaria-pao-bom
+  esperado: {legivel: false, revisar: true, motivo_contem: ilegível, usou_sonnet: false}
+
+- id: ilegivel_pdf_escaneado
+  arquivo: ilegivel_02_pdf_escaneado_sem_texto.pdf
+  cliente: studio-bela-forma
+  esperado: {legivel: false, revisar: true, motivo_contem: ilegível, usou_sonnet: false}

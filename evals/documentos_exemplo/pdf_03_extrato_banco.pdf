@@ -1,0 +1,41 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 616 >>
+stream
+BT /F1 16 Tf 60 780 Td (EXTRATO BANC\301RIO - CONTA CORRENTE) Tj ET
+BT /F1 11 Tf 60 758 Td (Banco: Banco Exemplo S.A. \(fict\355cio\)) Tj ET
+BT /F1 11 Tf 60 736 Td (CNPJ: 90.999.999/0001-17) Tj ET
+BT /F1 11 Tf 60 714 Td (Data: 31/10/2026) Tj ET
+BT /F1 11 Tf 60 692 Td (Per\355odo: 01/10/2026 a 31/10/2026) Tj ET
+BT /F1 11 Tf 60 670 Td (Ag\352ncia 0001  Conta 12345-6  Titular: Studio Bela Forma \(fict\355cio\)) Tj ET
+BT /F1 11 Tf 60 648 Td (Saldo anterior: R$ 8.200,00) Tj ET
+BT /F1 11 Tf 60 626 Td (Cr\351ditos: R$ 6.145,67   D\351bitos: R$ 2.000,00) Tj ET
+BT /F1 11 Tf 60 604 Td (Saldo final: R$ 12.345,67) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000121 00000 n 
+0000000247 00000 n 
+0000000913 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1010
+%%EOF
